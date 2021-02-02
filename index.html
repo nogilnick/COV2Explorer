@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>CoV-2 Explorer</title>
+  <link rel="stylesheet" type="text/css" href="Style.css">
+  <script src="plotly-latest.min.js"></script>
+  <script src="Explore.js"></script>
+</head>
+<body>
+  <div id="graph" style="height: 80%; width: 100%"></div>
+
+  <div style="display: table; background-color: #474747; height: 20%; width: 100%;">
+      <div style="display: table-row; height: 100%; width: 100%;">
+          <div style="border-right: 3px solid #343434; display: table-cell; padding: 0.1% 0 0 0.2%; text-align: left; vertical-align: top; width: 10%;">
+              <text><b>Statistics:</b></text><br><br>
+              <text id="numSampText"></text><br>
+              <text id="numDaysText"></text><br>
+              <text id="pctSampText"></text>
+
+              <div style="position: absolute; bottom: 0;">
+                <a href="https://nicholastsmith.wordpress.com/" style="font-size: 0.75em;">nicholastsmith.</a>
+              </div>
+          </div>
+          <div style="border-right: 3px solid #343434; display: table-cell; padding: 0.1% 0 0 0.2%; height: 100%; text-align: left; vertical-align: top; width: 14%;">
+            <text><b>Date:</b></text><br><br>
+
+            <div style="margin-left: auto; text-align: center; ">
+              <text id="rangeTitle1" style="margin-right: auto; margin-left: auto;"></text>
+              <br>
+              <input type="range" min="0" max="100" value="0" id="dateRange1" onchange="Update();" style="margin-right: auto; margin-left: auto;">
+              <br>
+              <text id="rangeTitle2" style="margin-right: auto; margin-left: auto;"></text>
+              <br>
+              <input type="range" min="0" max="100" value="9" id="dateRange2" onchange="Update();" style="margin-right: auto; margin-left: auto;">
+            </div>
+
+          </div>
+          <div id="mutBar" style="display: table-cell; height: 100%; width: 76%;"></div>
+      </div>
+  </div>
+</body>
+</html>
