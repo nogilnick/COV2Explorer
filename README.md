@@ -1,4 +1,4 @@
 # COV2Explorer
 CoVID-19 Genome Explorer
 
-_Powered by Plot.ly_
+_Powered by Plotly_
