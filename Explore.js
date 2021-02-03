@@ -21,6 +21,7 @@ function GetData(s, e) {
           'O': DAT['O'].slice(i1, i2),
           'L': DAT['L'].slice(i1, i2),
           'D': DAT['D'].slice(i1, i2),
+          'M': DAT['M'].slice(i1, i2)
          };
 }
 
@@ -58,7 +59,7 @@ function OnLoad() {
   layOut['yaxis']['range'] = [DAT['y0'] - yd, DAT['y1'] + yd];
 
   Plotly.newPlot('graph', [{
-    x: ld['X'], y: ld['Y'], marker: {size: ld['S'], color: ld['C']},
+    x: ld['X'], y: ld['Y'], marker: {size: ld['S'], color: ld['C'], symbol: ld['M']},
     mode: 'markers',
     type: 'scatter',
     text: ld['L']
@@ -80,7 +81,7 @@ function Update() {
   Plotly.animate('graph', {
     data: [{x: ld['X'],
             y: ld['Y'],
-            marker: {size: ld['S'], color: ld['C']},
+            marker: {size: ld['S'], color: ld['C'], symbol: ld['M']},
             text: ld['L'],
             layout: layOut}],
     traces: [0]
