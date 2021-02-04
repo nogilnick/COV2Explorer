@@ -135,21 +135,22 @@ function UpdateRangeBar() {
   var v1 = Math.min(rb1.value, maxVal);
   var v2 = Math.min(rb2.value, maxVal);
   rb1.value = v1 = Math.min(v1, v2);
-  rb2.value = v2 = Math.max(v1, v2) + 1;
+  rb2.value = v2 = Math.max(v1, v2);
 
   var s = DAT['DI'][v1];
-  var e = Math.min(DAT['DI'][v2 - 1], maxRow);  // Display date as inclusive
+  var e = Math.min(DAT['DI'][v2], maxRow);  // Display date as inclusive
 
   tl1.innerHTML = DAT['D'][s];
   tl2.innerHTML = DAT['D'][e];
 
   ele = document.getElementById("numDaysText");
   if (ele !== null) {
-    ele.innerHTML = Math.round((Date.parse(DAT['D'][e]) - Date.parse(DAT['D'][s])) / (1000 * 60 * 60 * 24) + 1) + " Days";
+    var nWeek = Math.round((Date.parse(DAT['D'][e]) - Date.parse(DAT['D'][s])) / (1000 * 60 * 60 * 24 * 7) + 1);
+    ele.innerHTML =  nWeek + ((nWeek == 1) ? " Week" : " Weeks");
   }
 
   // Now use exclusive ending logic
-  e = Math.min(DAT['DI'][v2], maxRow);
+  e = Math.min(DAT['DI'][v2 + 1], maxRow);
   var ele = document.getElementById("numSampText");
   if (ele !== null) {
     ele.innerHTML = (e - s) + " Samples";
@@ -160,7 +161,7 @@ function UpdateRangeBar() {
     ele.innerHTML = Math.round(((e - s) / maxRow) * 100) + "%";
   }
 
-  return [v1, v2];
+  return [v1, v2 + 1];
 }
 
 function UpdateBar(s, e) {
