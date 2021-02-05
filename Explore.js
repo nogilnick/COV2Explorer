@@ -25,6 +25,19 @@ function GetData(s, e) {
          };
 }
 
+function Init() {
+    X = DAT['MP'];
+    Y = Array(X.length);
+
+    // Set Scatter plot bounds
+    var xd = (DAT['x1'] - DAT['x0']) * 0.05;
+    var yd = (DAT['y1'] - DAT['y0']) * 0.05;
+    layOut['xaxis']['range'] = [DAT['x0'] - xd, DAT['x1'] + xd];
+    layOut['yaxis']['range'] = [DAT['y0'] - yd, DAT['y1'] + yd];
+
+    Update();
+}
+
 function LoadJSON() {   
 
   var xObj = new XMLHttpRequest();
@@ -33,12 +46,10 @@ function LoadJSON() {
   xObj.onreadystatechange = function () {
         if (xObj.readyState == 4 && xObj.status == "200") {
           DAT = JSON.parse(xObj.responseText);
-          X = DAT['MP'];
-          Y = Array(X.length);
-          OnLoad();
+          Init();
         }
   };
-  xObj.send(null);  
+  xObj.send(null);
 }
 
 function NPad(n) {
@@ -50,49 +61,33 @@ function OnLoad() {
   var off = UpdateRangeBar();
   if (off === null)
     return;
+  
+  PlotScatter(GetData(off[0], off[1]));
 
-  var ld = GetData(off[0], off[1]);
+  UpdateBar(off[0], off[1]);
 
-  var xd = (DAT['x1'] - DAT['x0']) * 0.05;
-  var yd = (DAT['y1'] - DAT['y0']) * 0.05;
-  layOut['xaxis']['range'] = [DAT['x0'] - xd, DAT['x1'] + xd];
-  layOut['yaxis']['range'] = [DAT['y0'] - yd, DAT['y1'] + yd];
+  PlotBar();
+}
 
-  Plotly.newPlot('graph', [{
+function PlotBar() {
+    Plotly.react('mutBar', [{x: X, y: Y, type: 'bar'}], barLayout, {displayModeBar: false, responsive: true});
+}
+
+function PlotScatter(ld) {
+  Plotly.react('graph', [{
     x: ld['X'], y: ld['Y'], marker: {size: ld['S'], color: ld['C'], symbol: ld['M']},
     mode: 'markers',
     type: 'scatter',
     text: ld['L']
   }], layOut, {responsive: true});
-
-  UpdateBar(off[0], off[1]);
-
-  Plotly.newPlot('mutBar', [{x: X, y: Y, type: 'bar'}], barLayout, {displayModeBar: false, responsive: true});
 }
 
 function Update() {
-
   var off = UpdateRangeBar();
   if (off === null)
     return;
 
-  var ld = GetData(off[0], off[1]);
-
-  Plotly.animate('graph', {
-    data: [{x: ld['X'],
-            y: ld['Y'],
-            marker: {size: ld['S'], color: ld['C'], symbol: ld['M']},
-            text: ld['L'],
-            layout: layOut}],
-    traces: [0]
-  }, {
-    transition: {
-      duration: 1234
-    },
-    frame: {
-      duration: 1234
-    }
-  });
+  PlotScatter(GetData(off[0], off[1]));
 
   UpdateBar(off[0], off[1]);
 
@@ -102,20 +97,8 @@ function Update() {
   if ((xCnt > cCnt) || (((xCnt - cCnt) / cCnt) < -0.33)) {
     barLayout['yaxis']['range'] = [0, xCnt];
   }
-
-  Plotly.animate('mutBar', {
-    data: [{x: X, y: Y}],
-    traces: [0],
-    layout: barLayout
-  }, {
-    transition: {
-      duration: 1234,
-      easing: 'linear'
-    },
-    frame: {
-      duration: 1234
-    }
-  });
+  
+  PlotBar();
 }
 
 function UpdateRangeBar() {
