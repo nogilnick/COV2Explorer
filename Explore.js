@@ -77,7 +77,7 @@ function PlotScatter(ld) {
   Plotly.react('graph', [{
     x: ld['X'], y: ld['Y'], marker: {size: ld['S'], color: ld['C'], symbol: ld['M']},
     mode: 'markers',
-    type: 'scatter',
+    type: 'scattergl',
     text: ld['L']
   }], layOut, {responsive: true});
 }
